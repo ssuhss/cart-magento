@@ -43,7 +43,7 @@ class MercadoPago_Core_Model_Source_PaymentMethods
 
         $helper->log('Get payment methods by country... ', 'mercadopago.log');
         $helper->log('API payment methods: ' . '/v1/payment_methods?access_token=' . $accessToken, 'mercadopago.log');
-        $response = MercadoPago_Lib_RestClient::get('/sites/'. strtoupper($website->getConfig('payment/mercadopago/country')) .'/payment_methods?marketplace=NONE');
+        $response = MercadoPago_RestClient_MpRestClient::get('/sites/'. strtoupper($website->getConfig('payment/mercadopago/country')) .'/payment_methods?marketplace=NONE');
 
         $helper->log("API payment methods", 'mercadopago.log', $response);
 

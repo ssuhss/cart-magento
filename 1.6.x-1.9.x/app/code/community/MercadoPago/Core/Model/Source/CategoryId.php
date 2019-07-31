@@ -17,11 +17,11 @@
 class MercadoPago_Core_Model_Source_CategoryId
     extends Mage_Payment_Model_Method_Abstract
 {
+
     public function toOptionArray()
     {
         Mage::helper('mercadopago')->log("Get Categories... ", 'mercadopago.log');
-
-        $response = MercadoPago_Lib_RestClient::get("/item_categories");
+        $response = MercadoPago_RestClient_MpRestClient::get("/item_categories");
         Mage::helper('mercadopago')->log("API item_categories", 'mercadopago.log', $response);
 
         $response = $response['response'];
