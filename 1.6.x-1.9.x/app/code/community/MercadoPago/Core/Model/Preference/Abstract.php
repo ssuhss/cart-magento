@@ -1,6 +1,6 @@
 <?php
 
-abstract class MercadoPago_Core_Model_Preference_Abstract
+abstract class MercadoPago_Core_Model_Preference_Abstract extends Mage_Core_Model_Abstract
 {
 
     public $helper;
@@ -23,12 +23,12 @@ abstract class MercadoPago_Core_Model_Preference_Abstract
     {
         $this->helper = Mage::helper('mercadopago');
         $this->customer = Mage::getSingleton('customer/session')->getCustomer();
-        $this->customerInfo = $this->getCustomerInfo($this->customer, $this->order);
         $this->quote = $this->_getQuote();
         $this->billingAddress = $this->quote->getBillingAddress()->getData();
         $this->order = $this->_getOrder($this->_getQuote()->getReservedOrderId());
         $this->orderIncrementId = $this->_getQuote()->getReservedOrderId();
         $this->accessToken = Mage::getStoreConfig(self::XML_PATH_ACCESS_TOKEN);
+        $this->customerInfo = $this->getCustomerInfo($this->customer, $this->order);
     }
 
 

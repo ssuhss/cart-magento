@@ -15,6 +15,7 @@ class MercadoPago_Core_Model_Preference_Custom extends MercadoPago_Core_Model_Pr
 
     /**
      * @param null $paymentInfo
+     * @return array
      * @throws Mage_Core_Exception
      */
     public function createPreference($paymentInfo = null)
@@ -61,6 +62,7 @@ class MercadoPago_Core_Model_Preference_Custom extends MercadoPago_Core_Model_Pr
             $preference['sponsor_id'] = $sponsorId;
         }
 
+        return $preference;
     }
 
 }
