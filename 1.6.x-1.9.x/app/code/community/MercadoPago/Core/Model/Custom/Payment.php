@@ -166,7 +166,7 @@ class MercadoPago_Core_Model_Custom_Payment
         $init = microtime(true);
       
         Mage::helper('mercadopago/log')->log("Credit Card -> init prepare post payment", self::LOG_FILE);
-        $core = Mage::getModel('mercadopago/core');
+        $preference = Mage::getModel('mercadopago/preference_custom');
         $quote = $this->_getQuote();
         $order_id = $quote->getReservedOrderId();
         $order = $this->_getOrder($order_id);
@@ -178,7 +178,7 @@ class MercadoPago_Core_Model_Custom_Payment
             $payment_info['transaction_amount'] = $usingSecondCardInfo ['amount'];
         }
 
-        $preference = $core->makeDefaultPreferencePaymentV1($payment_info);
+        $preference = $preference->createPreference($payment_info);
 
         if (isset($usingSecondCardInfo)) {
             $preference['installments'] = (int)$usingSecondCardInfo['installments'];
