@@ -50,13 +50,13 @@ class MercadoPago_Core_Model_Custom_Payment
             $this->getInfoInstance()->setAdditionalInformation('status', $payment['status']);
             $this->getInfoInstance()->setAdditionalInformation('payment_id_detail', $payment['id']);
             $this->getInfoInstance()->setAdditionalInformation('status_detail', $payment['status_detail']);
-          
-            if(isset($payment['payer']) && isset($payment['payer']['identification']) && isset($payment['payer']['identification']['type'])){
-              $this->getInfoInstance()->setAdditionalInformation('payer_identification_type', $payment['payer']['identification']['type']);
+
+            if (isset($payment['payer']) && isset($payment['payer']['identification']) && isset($payment['payer']['identification']['type'])) {
+                $this->getInfoInstance()->setAdditionalInformation('payer_identification_type', $payment['payer']['identification']['type']);
             }
 
-            if(isset($payment['payer']) && isset($payment['payer']['identification']) && isset($payment['payer']['identification']['number'])){
-              $this->getInfoInstance()->setAdditionalInformation('payer_identification_number', $payment['payer']['identification']['number']);
+            if (isset($payment['payer']) && isset($payment['payer']['identification']) && isset($payment['payer']['identification']['number'])) {
+                $this->getInfoInstance()->setAdditionalInformation('payer_identification_number', $payment['payer']['identification']['number']);
             }
 
             $stateObject->setState(Mage::helper('mercadopago/statusUpdate')->_getAssignedState('pending_payment'));
@@ -72,7 +72,8 @@ class MercadoPago_Core_Model_Custom_Payment
         return false;
     }
 
-    protected function saveOrder() {
+    protected function saveOrder()
+    {
         $quote = $this->_getQuote();
         $order_id = $quote->getReservedOrderId();
         $order = $this->_getOrder($order_id);
@@ -98,8 +99,8 @@ class MercadoPago_Core_Model_Custom_Payment
         }
 
         $info_form = $data->getData();
-        if(!isset($info_form['mercadopago_custom'])){
-          return $this;
+        if (!isset($info_form['mercadopago_custom'])) {
+            return $this;
         }
 
         $info_form = $info_form['mercadopago_custom'];
@@ -108,7 +109,7 @@ class MercadoPago_Core_Model_Custom_Payment
         }
 
         //Added to force value as there are cases coming -1
-        if( $info_form['installments'] == -1 && strtoupper(Mage::getStoreConfig('payment/mercadopago/country')) == "MLV"){
+        if ($info_form['installments'] == -1 && strtoupper(Mage::getStoreConfig('payment/mercadopago/country')) == "MLV") {
             $info_form['installments'] = 1;
             Mage::helper('mercadopago/log')->log("Installment updated to 1... form return -1. ", self::LOG_FILE);
         }
@@ -164,7 +165,7 @@ class MercadoPago_Core_Model_Custom_Payment
     {
         //check actual time
         $init = microtime(true);
-      
+
         Mage::helper('mercadopago/log')->log("Credit Card -> init prepare post payment", self::LOG_FILE);
 
         $quote = $this->_getQuote();
@@ -213,11 +214,11 @@ class MercadoPago_Core_Model_Custom_Payment
 
         /* POST /v1/payments */
         $response = Mage::getModel('mercadopago/core')->postPaymentV1($preference);
-      
+
         //calculate time consumed
-        $timeConsumed = round(microtime(true) - $init, 3); 
+        $timeConsumed = round(microtime(true) - $init, 3);
         Mage::helper('mercadopago/log')->log("Time consumed to create payment (credit card): " . $timeConsumed . "s", 'mercadopago-custom.log');
-      
+
         return $response;
     }
 

@@ -23,6 +23,7 @@ class MercadoPago_Core_Helper_Response
     const INFO_STATUS_NOT_FINAL = 'Status not final';
     const INFO_EXTERNAL_REFERENCE_NOT_FOUND = 'External reference not found';
     const INFO_ORDER_CANCELED = 'The order is canceled';
+    const INFO_BAD_REQUEST = 'Invalid request';
 
     const TOPIC_RECURRING_PAYMENT = 'preapproval';
     const TOPIC_PAYMENT = 'payment';

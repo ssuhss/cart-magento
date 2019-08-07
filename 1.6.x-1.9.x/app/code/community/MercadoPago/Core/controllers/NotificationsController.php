@@ -1,21 +1,9 @@
 <?php
 
 /**
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL).
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- *
- * @category       Payment Gateway
- * @package        MercadoPago
- * @author         Gabriel Matsuoka (gabriel.matsuoka@gmail.com)
- * @copyright      Copyright (c) MercadoPago [http://www.mercadopago.com]
- * @license        http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Class MercadoPago_Core_NotificationsController
  */
-class MercadoPago_Core_NotificationsController
-    extends Mage_Core_Controller_Front_Action
+class MercadoPago_Core_NotificationsController extends Mage_Core_Controller_Front_Action
 {
 
     protected $_requestData = array();
@@ -30,33 +18,29 @@ class MercadoPago_Core_NotificationsController
 
     const LOG_FILE = 'mercadopago-notification.log';
 
-    protected function getCore() {
-        if (empty($this->_core)) {
-            $this->_core = Mage::getModel('mercadopago/core');
-        }
-        return $this->_core;
-    }
 
     public function indexAction()
     {
         $params = $this->getRequest()->getParams();
         Mage::helper('mercadopago/log')->log('Received notification', self::LOG_FILE, $params);
         if (isset($params['topic'])) {
-            switch($params['topic']) {
-                case MercadoPago_Core_Helper_Response::TOPIC_RECURRING_PAYMENT: {
-                    $this->_forward('recurring');
-                    break;
-                }
-                case MercadoPago_Core_Helper_Response::TOPIC_PAYMENT: {
-                    $this->_forward('recurringPayment');
-                    break;
-                }
+            switch ($params['topic']) {
+                case MercadoPago_Core_Helper_Response::TOPIC_RECURRING_PAYMENT:
+                    {
+                        $this->_forward('recurring');
+                        break;
+                    }
+                case MercadoPago_Core_Helper_Response::TOPIC_PAYMENT:
+                    {
+                        $this->_forward('recurringPayment');
+                        break;
+                    }
             }
         }
     }
 
     public function standardAction()
-    {   
+    {
         $this->_requestData = $this->getRequest()->getParams();
         //notification received
         $this->_helper = Mage::helper('mercadopago');
@@ -79,13 +63,13 @@ class MercadoPago_Core_NotificationsController
                 $this->_paymentData = $this->_getFormattedPaymentData($this->_getRequestData('id'));
 
                 if (empty($this->_paymentData)) {
-                  return;
+                    return;
                 }
 
                 if (!$this->_handleMerchantOrder($this->_paymentData['merchant_order_id'])) {
-                  return;
+                    return;
                 }
-               
+
                 break;
             default:
                 $this->_responseLog();
@@ -130,43 +114,20 @@ class MercadoPago_Core_NotificationsController
     public function customAction()
     {
         $request = $this->getRequest();
-        $this->_helper = Mage::helper('mercadopago');
-        $this->_statusHelper = Mage::helper('mercadopago/statusUpdate');
+        $customNotification = Mage::getModel('mercadopago/notification_custom', $request);
+        $notificationResponse = $customNotification->process();
+        $this->_helper->log($notificationResponse['body'], self::LOG_FILE, $request->getParams());
+        $this->_setResponse($notificationResponse['body'], $notificationResponse['code']);
+    }
+
+    /**
+     * @return Mage_Core_Controller_Request_Http
+     */
+    public function getRequest()
+    {
+        $request = parent::getRequest();
         $this->_helper->log('Custom Received notification', self::LOG_FILE, $request->getParams());
-        $dataId = $request->getParam('data_id');
-        $type = $request->getParam('type');
-        if (!empty($dataId) && $type == 'payment') {
-            $response = $this->getCore()->getPaymentV1($dataId);
-            $this->_helper->log('Return payment', self::LOG_FILE, $response);
-
-            if ($this->_isValidResponse($response)) {
-                $payment = $response['response'];
-
-                $payment = $this->_helper->setPayerInfo($payment);
-                $this->_order = Mage::getModel('sales/order')->loadByIncrementId($payment['external_reference']);
-                if (!$this->_orderExists() || $this->_order->getStatus() == 'canceled') {
-                    return;
-                }
-                $this->_helper->log('Update Order', self::LOG_FILE);
-                $this->_statusHelper->setStatusUpdated($payment, $this->_order);
-
-                $data = $this->_statusHelper->formatArrayPayment($data = array(), $payment, self::LOG_FILE);
-
-                $this->getCore()->updateOrder($this->_order, $data);
-                $setStatusResponse = $this->_statusHelper->setStatusOrder($payment);
-                $this->_setResponse($setStatusResponse['body'], $setStatusResponse['code']);
-                $this->_helper->log('Http code', self::LOG_FILE, $this->getResponse()->getHttpResponseCode());
-
-                return;
-            }
-        }
-
-        $this->_helper->log('Payment not found', self::LOG_FILE, $request->getParams());
-
-        // Internal error returns to force Mercado Pago renotification
-        $this->_setResponse('Payment not found', MercadoPago_Core_Helper_Response::HTTP_INTERNAL_ERROR);
-
-        $this->_helper->log('Http code', self::LOG_FILE, $this->getResponse()->getHttpResponseCode());
+        return $request;
     }
 
     protected function _handleMerchantOrder($id)
@@ -184,7 +145,7 @@ class MercadoPago_Core_NotificationsController
         $this->_statusFinal = $this->_statusHelper->getStatusFinal($this->_paymentData['status'], $this->_merchantOrder);
         $this->_shipmentData = $this->_getShipmentsArray();
         $this->merchantOrder = $merchantOrder;
-      
+
         return true;
     }
 
@@ -200,16 +161,16 @@ class MercadoPago_Core_NotificationsController
 
     protected function _getFormattedPaymentData($paymentId, $data = array())
     {
-      
-      $response = $this->getCore()->getPayment($paymentId);
 
-      if (!$this->_isValidResponse($response)) {
-        return array();
-      }
-      
-      $payment = $response['response'];
-      
-      return $this->_statusHelper->formatArrayPayment($data, $payment, self::LOG_FILE);
+        $response = $this->getCore()->getPayment($paymentId);
+
+        if (!$this->_isValidResponse($response)) {
+            return array();
+        }
+
+        $payment = $response['response'];
+
+        return $this->_statusHelper->formatArrayPayment($data, $payment, self::LOG_FILE);
     }
 
     protected function _responseLog()
@@ -249,16 +210,6 @@ class MercadoPago_Core_NotificationsController
         return (empty($p1) || empty($p2));
     }
 
-    protected function _orderExists()
-    {
-        if ($this->_order->getId()) {
-            return true;
-        }
-        $this->_helper->log(MercadoPago_Core_Helper_Response::INFO_EXTERNAL_REFERENCE_NOT_FOUND, self::LOG_FILE, $this->_requestData);
-        $this->_setResponse(MercadoPago_Core_Helper_Response::INFO_EXTERNAL_REFERENCE_NOT_FOUND, MercadoPago_Core_Helper_Response::HTTP_INTERNAL_ERROR);
-
-        return false;
-    }
 
     protected function _setResponse($body, $code)
     {
@@ -271,7 +222,7 @@ class MercadoPago_Core_NotificationsController
         if ($this->_shipmentExists($this->_shipmentData)) {
             Mage::dispatchEvent('mercadopago_standard_notification_before_set_status',
                 array('shipmentData' => $this->_shipmentData,
-                 'orderId'      => $this->_merchantOrder['external_reference'])
+                    'orderId' => $this->_merchantOrder['external_reference'])
             );
         }
     }
@@ -280,8 +231,8 @@ class MercadoPago_Core_NotificationsController
     {
         if ($this->_shipmentExists($this->_shipmentData)) {
             Mage::dispatchEvent('mercadopago_standard_notification_received',
-                array('payment'        => $this->_paymentData,
-                 'merchant_order' => $this->_merchantOrder)
+                array('payment' => $this->_paymentData,
+                    'merchant_order' => $this->_merchantOrder)
             );
         }
     }
@@ -346,7 +297,8 @@ class MercadoPago_Core_NotificationsController
 
     }
 
-    public function recurringPaymentAction() {
+    public function recurringPaymentAction()
+    {
         $params = $this->getRequest()->getParams();
         if (!isset($params['id'])) {
             return;
@@ -356,7 +308,7 @@ class MercadoPago_Core_NotificationsController
             return;
         }
         Mage::helper('mercadopago/log')->log('Recurring PaymentAction Data', self::LOG_FILE, $paymentData);
-        $paymentData=$paymentData['response']['collection'];
+        $paymentData = $paymentData['response']['collection'];
         if ($paymentData['operation_type'] == 'recurring_payment' && $paymentData['status'] == 'approved') {
             $profile = Mage::getModel('sales/recurring_profile')->load($paymentData['external_reference']);
             if ($profile->getId()) {
