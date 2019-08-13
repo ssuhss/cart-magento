@@ -11,6 +11,7 @@ class MercadoPago_Core_NotificationsController extends Mage_Core_Controller_Fron
     protected $_paymentData = array();
     protected $_core;
     protected $_helper;
+    protected $_log;
     protected $_statusHelper;
     protected $_order;
     protected $_shipmentData;
@@ -18,11 +19,16 @@ class MercadoPago_Core_NotificationsController extends Mage_Core_Controller_Fron
 
     const LOG_FILE = 'mercadopago-notification.log';
 
+    public function __construct(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response, array $invokeArgs = array())
+    {
+        parent::__construct($request, $response, $invokeArgs);
+        $this->_log = Mage::helper('mercadopago/log');
+    }
 
     public function indexAction()
     {
         $params = $this->getRequest()->getParams();
-        Mage::helper('mercadopago/log')->log('Received notification', self::LOG_FILE, $params);
+        $this->_log->log('Received notification', self::LOG_FILE, $params);
         if (isset($params['topic'])) {
             switch ($params['topic']) {
                 case MercadoPago_Core_Helper_Response::TOPIC_RECURRING_PAYMENT:
@@ -43,11 +49,10 @@ class MercadoPago_Core_NotificationsController extends Mage_Core_Controller_Fron
     {
         $this->_requestData = $this->getRequest()->getParams();
         //notification received
-        $this->_helper = Mage::helper('mercadopago');
         $this->_statusHelper = Mage::helper('mercadopago/statusUpdate');
         $this->_shipmentData = '';
 
-        $this->_helper->log('Standard Received notification', self::LOG_FILE, $this->_requestData);
+        $this->_log->log('Standard Received notification', self::LOG_FILE, $this->_requestData);
         if ($this->_emptyParams($this->_getRequestData('id'), $this->_getRequestData('topic'))) {
 
             return;
@@ -79,7 +84,7 @@ class MercadoPago_Core_NotificationsController extends Mage_Core_Controller_Fron
 
         $this->_order = Mage::getModel('sales/order')->loadByIncrementId($this->_paymentData["external_reference"]);
         if ($this->_order->getStatus() == 'canceled') {
-            $this->_helper->log(MercadoPago_Core_Helper_Response::INFO_ORDER_CANCELED, self::LOG_FILE, $this->_requestData);
+            $this->_log->log(MercadoPago_Core_Helper_Response::INFO_ORDER_CANCELED, self::LOG_FILE, $this->_requestData);
             $this->_setResponse(MercadoPago_Core_Helper_Response::INFO_ORDER_CANCELED, MercadoPago_Core_Helper_Response::HTTP_BAD_REQUEST);
 
             return;
@@ -94,13 +99,13 @@ class MercadoPago_Core_NotificationsController extends Mage_Core_Controller_Fron
 
     protected function _postStandardAction()
     {
-        $this->_helper->log('Update Order', self::LOG_FILE);
+        $this->_log->log('Update Order', self::LOG_FILE);
         $this->getCore()->updateOrder($this->_order, $this->_paymentData);
         $this->_dispatchBeforeSetEvent();
 
         if ($this->_statusFinal != false) {
             $this->_paymentData['status_final'] = $this->_statusFinal;
-            $this->_helper->log('Received Payment data', self::LOG_FILE, $this->_paymentData);
+            $this->_log->log('Received Payment data', self::LOG_FILE, $this->_paymentData);
             $setStatusResponse = $this->_statusHelper->setStatusOrder($this->_paymentData);
             $this->_setResponse($setStatusResponse['body'], $setStatusResponse['code']);
         } else {
@@ -116,7 +121,7 @@ class MercadoPago_Core_NotificationsController extends Mage_Core_Controller_Fron
         $request = $this->getRequest();
         $customNotification = Mage::getModel('mercadopago/notification_custom', $request);
         $notificationResponse = $customNotification->process();
-        $this->_helper->log($notificationResponse['body'], self::LOG_FILE, $request->getParams());
+        $this->_log->log($notificationResponse['body'], self::LOG_FILE, $request->getParams());
         $this->_setResponse($notificationResponse['body'], $notificationResponse['code']);
     }
 
@@ -126,16 +131,16 @@ class MercadoPago_Core_NotificationsController extends Mage_Core_Controller_Fron
     public function getRequest()
     {
         $request = parent::getRequest();
-        $this->_helper->log('Custom Received notification', self::LOG_FILE, $request->getParams());
+        $this->_log->log('Custom Received notification', self::LOG_FILE, $request->getParams());
         return $request;
     }
 
     protected function _handleMerchantOrder($id)
     {
         $merchantOrder = $this->getCore()->getMerchantOrder($id);
-        $this->_helper->log('Return merchant_order', self::LOG_FILE, $merchantOrder);
+        $this->_log->log('Return merchant_order', self::LOG_FILE, $merchantOrder);
         if (!$this->_isValidMerchantOrder($merchantOrder)) {
-            $this->_helper->log(MercadoPago_Core_Helper_Response::INFO_MERCHANT_ORDER_NOT_FOUND, self::LOG_FILE, $this->_requestData);
+            $this->_log->log(MercadoPago_Core_Helper_Response::INFO_MERCHANT_ORDER_NOT_FOUND, self::LOG_FILE, $this->_requestData);
             $this->_setResponse(MercadoPago_Core_Helper_Response::INFO_MERCHANT_ORDER_NOT_FOUND, MercadoPago_Core_Helper_Response::HTTP_NOT_FOUND);
 
             return false;
@@ -175,7 +180,7 @@ class MercadoPago_Core_NotificationsController extends Mage_Core_Controller_Fron
 
     protected function _responseLog()
     {
-        $this->_helper->log("Http code", self::LOG_FILE, $this->getResponse()->getHttpResponseCode());
+        $this->_log->log("Http code", self::LOG_FILE, $this->getResponse()->getHttpResponseCode());
     }
 
     protected function _shipmentExists($shipmentData)
@@ -307,7 +312,7 @@ class MercadoPago_Core_NotificationsController extends Mage_Core_Controller_Fron
         if (empty($paymentData) || ($paymentData['status'] != 200 && $paymentData['status'] != 201)) {
             return;
         }
-        Mage::helper('mercadopago/log')->log('Recurring PaymentAction Data', self::LOG_FILE, $paymentData);
+        $this->_log->log('Recurring PaymentAction Data', self::LOG_FILE, $paymentData);
         $paymentData = $paymentData['response']['collection'];
         if ($paymentData['operation_type'] == 'recurring_payment' && $paymentData['status'] == 'approved') {
             $profile = Mage::getModel('sales/recurring_profile')->load($paymentData['external_reference']);

@@ -6,6 +6,7 @@
 abstract class MercadoPago_Core_Model_Notification_Abstract
 {
     public $helper;
+    public $log;
     public $statusHelper;
     public $request;
     public $core;
@@ -19,6 +20,7 @@ abstract class MercadoPago_Core_Model_Notification_Abstract
     {
         $this->request = $request;
         $this->helper = Mage::helper('mercadopago');
+        $this->log = Mage::helper('mercadopago/log');
         $this->statusHelper = Mage::helper('mercadopago/statusUpdate');
     }
 

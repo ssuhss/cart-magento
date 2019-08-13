@@ -148,7 +148,6 @@ class MercadoPago_Core_Helper_StatusUpdate extends Mage_Payment_Helper_Data
 
     public function setStatusOrder($payment)
     {
-        $helper = Mage::helper('mercadopago');
         //actual status != final_status
         $status = $this->getStatus($payment);
 
@@ -168,12 +167,12 @@ class MercadoPago_Core_Helper_StatusUpdate extends Mage_Payment_Helper_Data
         try {
             $statusSave = $this->update($payment, $message);
 
-            $helper->log("Update order", 'mercadopago.log', $statusSave->getData());
-            $helper->log($message, 'mercadopago.log');
+            Mage::helper('mercadopago/log')->log("Update order", 'mercadopago.log', $statusSave->getData());
+            Mage::helper('mercadopago/log')->log($message, 'mercadopago.log');
 
             return array('body' => $message, 'code' => MercadoPago_Core_Helper_Response::HTTP_OK);
         } catch (Exception $e) {
-            $helper->log("error in set order status: " . $e, 'mercadopago.log');
+            Mage::helper('mercadopago/log')->log("error in set order status: " . $e, 'mercadopago.log');
 
             return array('body' => $e, 'code' => MercadoPago_Core_Helper_Response::HTTP_BAD_REQUEST);
         }

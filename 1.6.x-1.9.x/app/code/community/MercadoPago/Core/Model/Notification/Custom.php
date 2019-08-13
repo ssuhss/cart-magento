@@ -22,7 +22,7 @@ class MercadoPago_Core_Model_Notification_Custom extends MercadoPago_Core_Model_
         $type = $this->request->getParam('type');
         if (!empty($dataId) && $type == 'payment') {
             $response = $this->getCore()->getPaymentV1($dataId);
-            $this->helper->log('Return payment', self::LOG_FILE, $response);
+            $this->log->log('Return payment', self::LOG_FILE, $response);
 
             if ($this->isValidResponse($response)) {
                 $payment = $response['response'];
@@ -36,7 +36,7 @@ class MercadoPago_Core_Model_Notification_Custom extends MercadoPago_Core_Model_
                     return $this->returnResponse(MercadoPago_Core_Helper_Response::INFO_ORDER_CANCELED, MercadoPago_Core_Helper_Response::HTTP_INTERNAL_ERROR);
                 }
 
-                $this->helper->log('Update Order', self::LOG_FILE);
+                $this->log->log('Update Order', self::LOG_FILE);
                 $this->statusHelper->setStatusUpdated($payment, $this->order);
                 $data = $this->statusHelper->formatArrayPayment($data = array(), $payment, self::LOG_FILE);
                 $this->getCore()->updateOrder($this->order, $data);
@@ -55,7 +55,7 @@ class MercadoPago_Core_Model_Notification_Custom extends MercadoPago_Core_Model_
     public function orderExists()
     {
         if (!parent::orderExists()) {
-            $this->helper->log(MercadoPago_Core_Helper_Response::INFO_EXTERNAL_REFERENCE_NOT_FOUND, self::LOG_FILE, $this->request);
+            $this->log->log(MercadoPago_Core_Helper_Response::INFO_EXTERNAL_REFERENCE_NOT_FOUND, self::LOG_FILE, $this->request);
             return false;
         }
         return true;

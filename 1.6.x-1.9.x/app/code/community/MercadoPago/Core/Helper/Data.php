@@ -35,10 +35,9 @@ class MercadoPago_Core_Helper_Data
     const STATUS_ACTIVE = 'active';
     const PAYMENT_TYPE_CREDIT_CARD = 'credit_card';
 
-
     protected $_apiInstance;
-
     protected $_website;
+    protected $_log;
 
 
     /**
@@ -372,9 +371,9 @@ class MercadoPago_Core_Helper_Data
             $request['data'][$key] = $field == 1 ? 'true' : 'false';
         }
 
-        $this->log("Analytics settings request sent /modules/tracking/settings", 'mercadopago_analytics.log', $request);
+        Mage::helper('mercadopago/log')->log("Analytics settings request sent /modules/tracking/settings", 'mercadopago_analytics.log', $request);
         $account_settings = $api->post("/modules/tracking/settings", $request['data']);
-        $this->log("Analytics settings response", 'mercadopago_analytics.log', $account_settings);
+        Mage::helper('mercadopago/log')->log("Analytics settings response", 'mercadopago_analytics.log', $account_settings);
 
     }
 

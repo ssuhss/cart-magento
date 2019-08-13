@@ -309,9 +309,8 @@ class MercadoPago_Core_Model_Core extends Mage_Payment_Model_Method_Abstract
 
     public function updateOrder($order = null, $data)
     {
-        $helper = Mage::helper('mercadopago');
         $statusHelper = Mage::helper('mercadopago/statusUpdate');
-        $helper->log('Update Order', 'mercadopago-notification.log');
+        Mage::helper('mercadopago/log')->log('Update Order', 'mercadopago-notification.log');
 
         if (!isset($data['external_reference'])) {
             return;
@@ -357,14 +356,13 @@ class MercadoPago_Core_Model_Core extends Mage_Payment_Model_Method_Abstract
             }
 
             $paymentStatus = $paymentOrder->save();
-            $helper->log('Update Payment', 'mercadopago.log', $paymentStatus->getData());
+            Mage::helper('mercadopago/log')->log('Update Payment', 'mercadopago.log', $paymentStatus->getData());
 
             $statusSave = $order->save();
-            $helper->log('Update order', 'mercadopago.log', $statusSave->getData());
+            Mage::helper('mercadopago/log')->log('Update order', 'mercadopago.log', $statusSave->getData());
         } catch (Exception $e) {
-            $helper->log('Error in update order status: ' . $e, 'mercadopago.log');
+            Mage::helper('mercadopago/log')->log('Error in update order status: ' . $e, 'mercadopago.log');
             $this->getResponse()->setBody($e);
-
             $this->getResponse()->setHttpResponseCode(MercadoPago_Core_Helper_Response::HTTP_BAD_REQUEST);
         }
     }
