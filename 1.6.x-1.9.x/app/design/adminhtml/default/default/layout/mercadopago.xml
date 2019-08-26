@@ -4,6 +4,7 @@
     <default>
         <reference name="head">
             <action method="addCss"><name>mercadopago/styles.css</name></action>
+            <action method="addJs"><name>mercadopago/adminhtml.js</name></action>
         </reference>
     </default>
 
