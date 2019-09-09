@@ -8,7 +8,9 @@ class MercadoPago_Core_Block_Adminhtml_System_Config_Form_Field_Steps extends Ma
      */
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
-        $this->setTemplate('mercadopago/adminhtml/steps.phtml');
+        $this->assign('helper', Mage::helper('mercadopago'));
+        $this->assign('logo', $this->getSkinUrl('mercadopago/images/logo.png'));
+        $this->setTemplate('mercadopago/adminhtml/geral_steps.phtml');
         return $this->_toHtml();
     }
 

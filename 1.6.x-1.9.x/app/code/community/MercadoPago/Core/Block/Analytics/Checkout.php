@@ -9,9 +9,9 @@ class MercadoPago_Core_Block_Analytics_Checkout
     /**
      * @var $helperData MercadoPago_Core_Helper_Data
      */
-    protected $_helperData;
+    public $_helperData;
 
-    protected function getAnalyticsData()
+    public function getAnalyticsData()
     {
         return Mage::helper('mercadopago')->getAnalyticsData();
     }

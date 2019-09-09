@@ -11,11 +11,11 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>0</show_in_store>
                     <fields>
-                        <steps translate="label">
+                        <steps>
                             <label>Steps</label>
                             <frontend_type>text</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_steps</frontend_model>
-                            <sort_order>10</sort_order>
+                            <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -31,7 +31,7 @@
                             <show_in_store>0</show_in_store>
                             <comment>Selecciona el país en el que opera tu cuenta de Mercado Pago</comment>
                         </country>
-                        <test_mode translate="label">
+                        <test_mode translate="label comment">
                             <label>Modo Pruebas</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
@@ -48,12 +48,13 @@
                             <label>Public Key</label>
                             <frontend_type>text</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
+                            <place_holder>Public Key</place_holder>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </public_key_test>
-                        <access_token_test translate="label comment">
+                        <access_token_test translate="label">
                             <label>Access Token</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>50</sort_order>
@@ -69,14 +70,20 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <depends>
+                                <test_mode>0</test_mode>
+                            </depends>
                         </public_key_prod>
-                        <access_token_prod translate="label comment">
+                        <access_token_prod translate="label">
                             <label>Access Token</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
+                            <depends>
+                                <test_mode>0</test_mode>
+                            </depends>
                         </access_token_prod>
                         <account_homolog>
                             <frontend_type>text</frontend_type>
@@ -99,7 +106,7 @@
                             <show_in_store>0</show_in_store>
                             <comment>Este es el nombre que aparecerá en la factura de tus clientes.</comment>
                         </store_name>
-                        <category_id translate="label">
+                        <category_id translate="label comment">
                             <label>Categoría</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
@@ -112,7 +119,7 @@
                                 (elige “otro” si tu producto es demasiado específico)
                             </comment>
                         </category_id>
-                        <consider_discount translate="label">
+                        <consider_discount translate="label comment">
                             <label>Cupones de descuento</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
@@ -124,7 +131,7 @@
                             <comment>¿Ofrecerás cupones de descuento a los clientes que compren con Mercado Pago?
                             </comment>
                         </consider_discount>
-                        <refund_available translate="label">
+                        <refund_available translate="label comment">
                             <label>Opciones de reembolso</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
@@ -154,10 +161,10 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                            <comment>If set this config with NO, magento success page will be used</comment>
+                            <comment>usar Success page de MP o Magento</comment>
                         </use_successpage_mp>
-                        <logs translate="label">
-                            <label>Modo debug y Logs</label>
+                        <logs translate="label comment">
+                            <label>Logs</label>
                             <frontend_type>select</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -169,7 +176,32 @@
                                 información de soporte.
                             </comment>
                         </logs>
+                        <debug_mode translate="label comment">
+                            <label>Debug Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Enable to display actual error messages to frontend users (not recommended on
+                                production environment)
+                            </comment>
+                            <depends>
+                                <test_mode>1</test_mode>
+                            </depends>
+                        </debug_mode>
 
+                        <version translate="label">
+                            <label>Version Module</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>MercadoPago_Core_Block_Adminhtml_Version</frontend_model>
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </version>
 
                         <!--<financing_cost translate="label">-->
                         <!--<label>Calculate Financing Cost</label>-->
@@ -189,6 +221,7 @@
                         <!--<show_in_default>1</show_in_default>-->
                         <!--<show_in_website>0</show_in_website>-->
                         <!--</heading_order_status_cron>-->
+
                         <!--<time_between_verifications translate="label comment">-->
                         <!--<label>Time between verifications</label>-->
                         <!--<frontend_type>text</frontend_type>-->
@@ -197,6 +230,7 @@
                         <!--<show_in_website>0</show_in_website>-->
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</time_between_verifications>-->
+
                         <!--<number_of_hours translate="label comment">-->
                         <!--<label>Interval</label>-->
                         <!--<comment>A interval is X hours before cron execution instant. Orders between this interval-->
@@ -218,6 +252,7 @@
                         <!--<show_in_website>1</show_in_website>-->
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</heading_order_status>-->
+
                         <!--<order_status_approved translate="label">-->
                         <!--<label>Choose the status of approved orders</label>-->
                         <!--<comment>To manage the status available go to System > Order Statuses</comment>-->
@@ -228,6 +263,7 @@
                         <!--<show_in_website>1</show_in_website>-->
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</order_status_approved>-->
+
                         <!--<order_status_pending translate="label">-->
                         <!--<label>Choose the status when payment is pending</label>-->
                         <!--<comment>To manage the status available go to System > Order Statuses</comment>-->
@@ -238,6 +274,7 @@
                         <!--<show_in_website>1</show_in_website>-->
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</order_status_pending>-->
+
                         <!--<order_status_in_process translate="label">-->
                         <!--<label>Choose the status when payment is in process</label>-->
                         <!--<comment>To manage the status available go to System > Order Statuses</comment>-->
@@ -248,6 +285,7 @@
                         <!--<show_in_website>1</show_in_website>-->
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</order_status_in_process>-->
+
                         <!--<order_status_in_mediation translate="label">-->
                         <!--<label>Choose the status when client open a mediation</label>-->
                         <!--<comment>To manage the status available go to System > Order Statuses</comment>-->
@@ -258,6 +296,7 @@
                         <!--<show_in_website>1</show_in_website>-->
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</order_status_in_mediation>-->
+
                         <!--<order_status_rejected translate="label">-->
                         <!--<label>Choose the status when payment was rejected</label>-->
                         <!--<comment>To manage the status available go to System > Order Statuses</comment>-->
@@ -268,6 +307,7 @@
                         <!--<show_in_website>1</show_in_website>-->
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</order_status_rejected>-->
+
                         <!--<order_status_cancelled translate="label">-->
                         <!--<label>Choose the status when payment was canceled</label>-->
                         <!--<comment>To manage the status available go to System > Order Statuses</comment>-->
@@ -278,6 +318,7 @@
                         <!--<show_in_website>1</show_in_website>-->
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</order_status_cancelled>-->
+
                         <!--<order_status_chargeback translate="label">-->
                         <!--<label>Choose the status when payment was charge back</label>-->
                         <!--<comment>To manage the status available go to System > Order Statuses</comment>-->
@@ -288,6 +329,7 @@
                         <!--<show_in_website>1</show_in_website>-->
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</order_status_chargeback>-->
+
                         <!--<order_status_refunded translate="label">-->
                         <!--<label>Choose the status of refunded orders</label>-->
                         <!--<comment>To manage the status available go to System > Order Statuses</comment>-->
@@ -317,6 +359,7 @@
                         <!--<frontend_class>validate-number-range number-range-1-20</frontend_class>-->
                         <!--<comment>It must be a number between 1 and 20</comment>-->
                         <!--</maximum_partial_refunds>-->
+
                         <!--<maximum_days_refund translate="label comment">-->
                         <!--<label>Maximum amount of days until refund is not accepted</label>-->
                         <!--<frontend_type>text</frontend_type>-->
@@ -327,6 +370,7 @@
                         <!--<frontend_class>validate-number-range number-range-1-90</frontend_class>-->
                         <!--<comment>It must be a number between 1 and 90</comment>-->
                         <!--</maximum_days_refund>-->
+
                         <!--<order_status_partially_refunded translate="label">-->
                         <!--<label>Choose the status when payment was partially refunded</label>-->
                         <!--<comment>To manage the status available go to System > Order Statuses</comment>-->
@@ -338,6 +382,7 @@
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</order_status_partially_refunded>-->
 
+
                         <!--<heading_calculator translate="label comment">-->
                         <!--<label>Payments Calculator</label>-->
                         <!--<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>-->
@@ -345,6 +390,7 @@
                         <!--<show_in_default>1</show_in_default>-->
                         <!--<show_in_website>1</show_in_website>-->
                         <!--</heading_calculator>-->
+
                         <!--<calculalator_available translate="label">-->
                         <!--<label>Enable Mercado Pago Installments Calculator</label>-->
                         <!--<frontend_type>select</frontend_type>-->
@@ -357,6 +403,7 @@
                         <!--credentials (Public Key and Access Token) must be set-->
                         <!--</comment>-->
                         <!--</calculalator_available>-->
+
                         <!--<show_in_pages translate="label">-->
                         <!--<label>Show Calculator on selected pages</label>-->
                         <!--<frontend_type>multiselect</frontend_type>-->
@@ -376,28 +423,7 @@
                         <!--<show_in_website>1</show_in_website>-->
                         <!--</heading_developer>-->
 
-                        <!--<debug_mode translate="label">-->
-                        <!--<label>Debug Mode</label>-->
-                        <!--<frontend_type>select</frontend_type>-->
-                        <!--<source_model>adminhtml/system_config_source_yesno</source_model>-->
-                        <!--<sort_order>171</sort_order>-->
-                        <!--<show_in_default>1</show_in_default>-->
-                        <!--<show_in_website>1</show_in_website>-->
-                        <!--<show_in_store>0</show_in_store>-->
-                        <!--<comment>Enable to display actual error messages to frontend users (not recommended on-->
-                        <!--production environment)-->
-                        <!--</comment>-->
-                        <!--</debug_mode>-->
 
-                        <!--<version translate="label">-->
-                        <!--<label>Version Module</label>-->
-                        <!--<frontend_type>select</frontend_type>-->
-                        <!--<frontend_model>MercadoPago_Core_Block_Adminhtml_Version</frontend_model>-->
-                        <!--<sort_order>172</sort_order>-->
-                        <!--<show_in_default>1</show_in_default>-->
-                        <!--<show_in_website>1</show_in_website>-->
-                        <!--<show_in_store>0</show_in_store>-->
-                        <!--</version>-->
                     </fields>
                 </mercadopago>
                 <mercadopago_standard translate="label" module="mercadopago">
@@ -426,8 +452,39 @@
                             <show_in_store>0</show_in_store>
                             <comment>Activa la experiencia de Mercado Pago en el checkout de tu tienda</comment>
                         </active>
+
+                        <!--<client_id translate="label">-->
+                        <!--<label>Client Id</label>-->
+                        <!--<frontend_type>text</frontend_type>-->
+                        <!--<sort_order>15</sort_order>-->
+                        <!--<show_in_default>1</show_in_default>-->
+                        <!--<show_in_website>1</show_in_website>-->
+                        <!--<show_in_store>0</show_in_store>-->
+                        <!--</client_id>-->
+                        <!--<client_secret translate="label">-->
+                        <!--<label>Client Secret</label>-->
+                        <!--<frontend_type>text</frontend_type>-->
+                        <!--<sort_order>17</sort_order>-->
+                        <!--<show_in_default>1</show_in_default>-->
+                        <!--<show_in_website>1</show_in_website>-->
+                        <!--<show_in_store>0</show_in_store>-->
+                        <!--<comment>-->
+                        <!--<![CDATA[-->
+                        <!--<span>Get your Client id and Client Secret on the link: </span><br>-->
+                        <!--<a href="https://www.mercadopago.com/mla/account/credentials?type=basic" target="_blank">Argentina</a>-->
+                        <!--<a href="https://www.mercadopago.com/mlb/account/credentials?type=basic" target="_blank">Brazil</a>-->
+                        <!--<a href="https://www.mercadopago.com/mlc/account/credentials?type=basic" target="_blank">Chile</a>-->
+                        <!--<a href="https://www.mercadopago.com/mco/account/credentials?type=basic" target="_blank">Colombia</a>-->
+                        <!--<a href="https://www.mercadopago.com/mlm/account/credentials?type=basic" target="_blank">Mexico</a>-->
+                        <!--<a href="https://www.mercadopago.com/mpe/account/credentials?type=basic" target="_blank">Peru</a>-->
+                        <!--<a href="https://www.mercadopago.com/mlu/account/credentials?type=basic" target="_blank">Uruguay</a>-->
+                        <!--<a href="https://www.mercadopago.com/mlv/account/credentials?type=basic" target="_blank">Venezuela</a>-->
+                        <!--]]>-->
+                        <!--</comment>-->
+                        <!--</client_secret>-->
+
                         <excluded_payment_methods_on translate="label">
-                            <label>Medios de pago online</label>
+                            <label>Exclude medios de pago online</label>
                             <frontend_type>multiselect</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
                             <source_model>mercadopago/source_paymentMethods</source_model>
@@ -439,10 +496,10 @@
                             <comment>Activa las alternativas de pago que prefieras para tus clientes.</comment>
                         </excluded_payment_methods_on>
                         <excluded_payment_methods_off translate="label">
-                            <label>Medios de pago presenciales</label>
+                            <label>Exclude medios de pago presenciales</label>
                             <frontend_type>multiselect</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
-                            <source_model>mercadopago/source_paymentMethods</source_model>
+                            <source_model>mercadopago/source_paymentMethodsTicket</source_model>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -525,35 +582,7 @@
                             <frontend_class>validate-number</frontend_class>
                         </sort_order>
 
-                        <!--<client_id translate="label">-->
-                        <!--<label>Client Id</label>-->
-                        <!--<frontend_type>text</frontend_type>-->
-                        <!--<sort_order>15</sort_order>-->
-                        <!--<show_in_default>1</show_in_default>-->
-                        <!--<show_in_website>1</show_in_website>-->
-                        <!--<show_in_store>0</show_in_store>-->
-                        <!--</client_id>-->
-                        <!--<client_secret translate="label">-->
-                        <!--<label>Client Secret</label>-->
-                        <!--<frontend_type>text</frontend_type>-->
-                        <!--<sort_order>17</sort_order>-->
-                        <!--<show_in_default>1</show_in_default>-->
-                        <!--<show_in_website>1</show_in_website>-->
-                        <!--<show_in_store>0</show_in_store>-->
-                        <!--<comment>-->
-                        <!--<![CDATA[-->
-                        <!--<span>Get your Client id and Client Secret on the link: </span><br>-->
-                        <!--<a href="https://www.mercadopago.com/mla/account/credentials?type=basic" target="_blank">Argentina</a>-->
-                        <!--<a href="https://www.mercadopago.com/mlb/account/credentials?type=basic" target="_blank">Brazil</a>-->
-                        <!--<a href="https://www.mercadopago.com/mlc/account/credentials?type=basic" target="_blank">Chile</a>-->
-                        <!--<a href="https://www.mercadopago.com/mco/account/credentials?type=basic" target="_blank">Colombia</a>-->
-                        <!--<a href="https://www.mercadopago.com/mlm/account/credentials?type=basic" target="_blank">Mexico</a>-->
-                        <!--<a href="https://www.mercadopago.com/mpe/account/credentials?type=basic" target="_blank">Peru</a>-->
-                        <!--<a href="https://www.mercadopago.com/mlu/account/credentials?type=basic" target="_blank">Uruguay</a>-->
-                        <!--<a href="https://www.mercadopago.com/mlv/account/credentials?type=basic" target="_blank">Venezuela</a>-->
-                        <!--]]>-->
-                        <!--</comment>-->
-                        <!--</client_secret>-->
+
                         <!--<title translate="label">-->
                         <!--<label>Payment Title</label>-->
                         <!--<frontend_type>text</frontend_type>-->
@@ -639,7 +668,7 @@
                             <comment>Activa la experiencia de Mercado Pago en el checkout de tu tienda</comment>
                         </active>
                         <payment_methods translate="label">
-                            <label>Medios de pago</label>
+                            <label>Exclude medios de pago</label>
                             <frontend_type>multiselect</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
                             <source_model>mercadopago/source_paymentMethods</source_model>
@@ -737,7 +766,7 @@
                         <!--<show_in_store>0</show_in_store>-->
                         <!--<comment>Check availability for your country</comment>-->
                         <!--</statement_descriptor>-->
-                        <!---->
+
                         <!--<banner_checkout translate="label">-->
                         <!--<label>Banner Checkout</label>-->
                         <!--<frontend_type>text</frontend_type>-->
@@ -746,7 +775,7 @@
                         <!--<show_in_website>1</show_in_website>-->
                         <!--<show_in_store>0</show_in_store>-->
                         <!--</banner_checkout>-->
-                        <!---->
+
                         <!--<coupon_mercadopago translate="label">-->
                         <!--<label>Marketing - Coupon Mercado Pago</label>-->
                         <!--<frontend_type>select</frontend_type>-->
@@ -827,7 +856,7 @@
                             </comment>
                         </active>
                         <excluded_payment_methods_ticket translate="label">
-                            <label>Medios de pago</label>
+                            <label>Exclude medios de pago</label>
                             <comment>Activa las alternativas de pago que prefieras para tus clientes.</comment>
                             <frontend_type>multiselect</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
@@ -984,21 +1013,21 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </head>
-                        <active translate="label">
-                            <label>Enabled</label>
+                        <active translate="label comment">
+                            <label>Activar Checkout</label>
                             <frontend_type>select</frontend_type>
-                            <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
+                            <!--<frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>-->
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                            <comment>It is necessary to configure the Public Key and Access Token for its proper
-                                functioning
+                            <comment>
+                                Activa la experiencia de Mercado Pago en el checkout de tu tienda
                             </comment>
                         </active>
                         <sort_order translate="label">
-                            <label>Checkout Position</label>
+                            <label>Posición en el Checkout</label>
                             <frontend_type>text</frontend_type>
                             <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
                             <sort_order>20</sort_order>
@@ -1007,6 +1036,15 @@
                             <show_in_store>1</show_in_store>
                             <frontend_class>validate-number</frontend_class>
                         </sort_order>
+                        <head_advanced>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>mercadopago/adminhtml_system_config_form_field_fields</frontend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </head_advanced>
+
 
                         <!--<title translate="label">-->
                         <!--<label>Payment Title</label>-->
@@ -1036,155 +1074,155 @@
                         <!--</communication>-->
                     </fields>
                 </mercadopago_banktransfer>
-                <mercadopago_recurring_checkout translate="label" module="mercadopago">
-                    <label>Mercado Pago - Recurring Payments</label>
-                    <sort_order>200</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>0</show_in_store>
-                    <fields>
-                        <mercadopago_recurring type="group" translate="label comment">
-                            <label>Recurring Payments</label>
-                            <frontend_type>text</frontend_type>
-                            <frontend_model>mercadopago/adminhtml_system_config_fieldset_payment</frontend_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <sort_order>20</sort_order>
-                            <comment>This payment method is used only for recurring profiles.</comment>
-                            <fields>
-                                <active translate="label">
-                                    <label>Enabled</label>
-                                    <frontend_type>select</frontend_type>
-                                    <source_model>adminhtml/system_config_source_yesno</source_model>
-                                    <sort_order>1</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                </active>
-                                <client_id translate="label">
-                                    <label>Client Id</label>
-                                    <frontend_type>text</frontend_type>
-                                    <sort_order>15</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                </client_id>
-                                <client_secret translate="label">
-                                    <label>Client Secret</label>
-                                    <frontend_type>text</frontend_type>
-                                    <sort_order>17</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                    <comment>
-                                        <![CDATA[
-                                    <span>Get your Client id and Client Secret on the link: </span><br>
-                                    <a href="https://www.mercadopago.com/mla/account/credentials?type=basic" target="_blank">Argentina</a>
-                                    <a href="https://www.mercadopago.com/mlb/account/credentials?type=basic" target="_blank">Brazil</a>
-                                    <a href="https://www.mercadopago.com/mlc/account/credentials?type=basic" target="_blank">Chile</a>
-                                    <a href="https://www.mercadopago.com/mco/account/credentials?type=basic" target="_blank">Colombia</a>
-                                    <a href="https://www.mercadopago.com/mlm/account/credentials?type=basic" target="_blank">Mexico</a>
-                                    <a href="https://www.mercadopago.com/mpe/account/credentials?type=basic" target="_blank">Peru</a>
-                                    <a href="https://www.mercadopago.com/mlu/account/credentials?type=basic" target="_blank">Uruguay</a>
-                                    <a href="https://www.mercadopago.com/mlv/account/credentials?type=basic" target="_blank">Venezuela</a>
-                                    ]]>
-                                    </comment>
-                                </client_secret>
-                                <title translate="label">
-                                    <label>Payment Title</label>
-                                    <frontend_type>text</frontend_type>
-                                    <sort_order>20</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>1</show_in_store>
-                                </title>
-                                <banner_checkout translate="label">
-                                    <label>Banner Checkout</label>
-                                    <frontend_type>text</frontend_type>
-                                    <sort_order>30</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                </banner_checkout>
-                                <sort_order translate="label">
-                                    <label>Checkout Position</label>
-                                    <frontend_type>text</frontend_type>
-                                    <sort_order>40</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>1</show_in_store>
-                                    <frontend_class>validate-number</frontend_class>
-                                </sort_order>
-                                <type_checkout>
-                                    <label>Type Checkout</label>
-                                    <frontend_type>select</frontend_type>
-                                    <source_model>mercadopago/source_typeCheckout</source_model>
-                                    <sort_order>50</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>1</show_in_store>
-                                </type_checkout>
-                                <auto_return translate="label">
-                                    <label>Auto Redirect</label>
-                                    <frontend_type>select</frontend_type>
-                                    <source_model>adminhtml/system_config_source_yesno</source_model>
-                                    <sort_order>60</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                    <comment>Auto-redirect the buyer when finishing the payment.</comment>
-                                </auto_return>
-                                <back_url translate="label">
-                                    <label>Back Url</label>
-                                    <frontend_type>text</frontend_type>
-                                    <sort_order>20</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                    <comment>URL to redirect the user when the pre-approval is authorized</comment>
-                                </back_url>
-                                <sandbox_mode translate="label">
-                                    <label>Sandbox Mode</label>
-                                    <frontend_type>select</frontend_type>
-                                    <source_model>adminhtml/system_config_source_yesno</source_model>
-                                    <sort_order>40</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>0</show_in_store>
-                                    <comment>Enable to test checkout with real credit cards</comment>
-                                </sandbox_mode>
-                                <iframe_width translate="label">
-                                    <label>Width Checkout Iframe</label>
-                                    <frontend_type>text</frontend_type>
-                                    <sort_order>100</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>1</show_in_store>
-                                    <frontend_class>validate-number</frontend_class>
-                                </iframe_width>
-                                <iframe_height translate="label">
-                                    <label>Height Checkout Iframe</label>
-                                    <frontend_type>text</frontend_type>
-                                    <sort_order>110</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>1</show_in_store>
-                                    <frontend_class>validate-number</frontend_class>
-                                </iframe_height>
-                                <communication translate="label">
-                                    <label>Custom Message</label>
-                                    <frontend_type>textarea</frontend_type>
-                                    <sort_order>170</sort_order>
-                                    <show_in_default>1</show_in_default>
-                                    <show_in_website>1</show_in_website>
-                                    <show_in_store>1</show_in_store>
-                                    <comment>Custom message to display in checkout</comment>
-                                </communication>
-                            </fields>
-                        </mercadopago_recurring>
-                    </fields>
-                </mercadopago_recurring_checkout>
+                <!--<mercadopago_recurring_checkout translate="label" module="mercadopago">-->
+                <!--<label>Mercado Pago - Recurring Payments</label>-->
+                <!--<sort_order>200</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>0</show_in_store>-->
+                <!--<fields>-->
+                <!--<mercadopago_recurring type="group" translate="label comment">-->
+                <!--<label>Recurring Payments</label>-->
+                <!--<frontend_type>text</frontend_type>-->
+                <!--<frontend_model>mercadopago/adminhtml_system_config_fieldset_payment</frontend_model>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>1</show_in_store>-->
+                <!--<sort_order>20</sort_order>-->
+                <!--<comment>This payment method is used only for recurring profiles.</comment>-->
+                <!--<fields>-->
+                <!--<active translate="label">-->
+                <!--<label>Enabled</label>-->
+                <!--<frontend_type>select</frontend_type>-->
+                <!--<source_model>adminhtml/system_config_source_yesno</source_model>-->
+                <!--<sort_order>1</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>0</show_in_store>-->
+                <!--</active>-->
+                <!--<client_id translate="label">-->
+                <!--<label>Client Id</label>-->
+                <!--<frontend_type>text</frontend_type>-->
+                <!--<sort_order>15</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>0</show_in_store>-->
+                <!--</client_id>-->
+                <!--<client_secret translate="label">-->
+                <!--<label>Client Secret</label>-->
+                <!--<frontend_type>text</frontend_type>-->
+                <!--<sort_order>17</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>0</show_in_store>-->
+                <!--<comment>-->
+                <!--<![CDATA[-->
+                <!--<span>Get your Client id and Client Secret on the link: </span><br>-->
+                <!--<a href="https://www.mercadopago.com/mla/account/credentials?type=basic" target="_blank">Argentina</a>-->
+                <!--<a href="https://www.mercadopago.com/mlb/account/credentials?type=basic" target="_blank">Brazil</a>-->
+                <!--<a href="https://www.mercadopago.com/mlc/account/credentials?type=basic" target="_blank">Chile</a>-->
+                <!--<a href="https://www.mercadopago.com/mco/account/credentials?type=basic" target="_blank">Colombia</a>-->
+                <!--<a href="https://www.mercadopago.com/mlm/account/credentials?type=basic" target="_blank">Mexico</a>-->
+                <!--<a href="https://www.mercadopago.com/mpe/account/credentials?type=basic" target="_blank">Peru</a>-->
+                <!--<a href="https://www.mercadopago.com/mlu/account/credentials?type=basic" target="_blank">Uruguay</a>-->
+                <!--<a href="https://www.mercadopago.com/mlv/account/credentials?type=basic" target="_blank">Venezuela</a>-->
+                <!--]]>-->
+                <!--</comment>-->
+                <!--</client_secret>-->
+                <!--<title translate="label">-->
+                <!--<label>Payment Title</label>-->
+                <!--<frontend_type>text</frontend_type>-->
+                <!--<sort_order>20</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>1</show_in_store>-->
+                <!--</title>-->
+                <!--<banner_checkout translate="label">-->
+                <!--<label>Banner Checkout</label>-->
+                <!--<frontend_type>text</frontend_type>-->
+                <!--<sort_order>30</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>0</show_in_store>-->
+                <!--</banner_checkout>-->
+                <!--<sort_order translate="label">-->
+                <!--<label>Checkout Position</label>-->
+                <!--<frontend_type>text</frontend_type>-->
+                <!--<sort_order>40</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>1</show_in_store>-->
+                <!--<frontend_class>validate-number</frontend_class>-->
+                <!--</sort_order>-->
+                <!--<type_checkout>-->
+                <!--<label>Type Checkout</label>-->
+                <!--<frontend_type>select</frontend_type>-->
+                <!--<source_model>mercadopago/source_typeCheckout</source_model>-->
+                <!--<sort_order>50</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>1</show_in_store>-->
+                <!--</type_checkout>-->
+                <!--<auto_return translate="label">-->
+                <!--<label>Auto Redirect</label>-->
+                <!--<frontend_type>select</frontend_type>-->
+                <!--<source_model>adminhtml/system_config_source_yesno</source_model>-->
+                <!--<sort_order>60</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>0</show_in_store>-->
+                <!--<comment>Auto-redirect the buyer when finishing the payment.</comment>-->
+                <!--</auto_return>-->
+                <!--<back_url translate="label">-->
+                <!--<label>Back Url</label>-->
+                <!--<frontend_type>text</frontend_type>-->
+                <!--<sort_order>20</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>0</show_in_store>-->
+                <!--<comment>URL to redirect the user when the pre-approval is authorized</comment>-->
+                <!--</back_url>-->
+                <!--<sandbox_mode translate="label">-->
+                <!--<label>Sandbox Mode</label>-->
+                <!--<frontend_type>select</frontend_type>-->
+                <!--<source_model>adminhtml/system_config_source_yesno</source_model>-->
+                <!--<sort_order>40</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>0</show_in_store>-->
+                <!--<comment>Enable to test checkout with real credit cards</comment>-->
+                <!--</sandbox_mode>-->
+                <!--<iframe_width translate="label">-->
+                <!--<label>Width Checkout Iframe</label>-->
+                <!--<frontend_type>text</frontend_type>-->
+                <!--<sort_order>100</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>1</show_in_store>-->
+                <!--<frontend_class>validate-number</frontend_class>-->
+                <!--</iframe_width>-->
+                <!--<iframe_height translate="label">-->
+                <!--<label>Height Checkout Iframe</label>-->
+                <!--<frontend_type>text</frontend_type>-->
+                <!--<sort_order>110</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>1</show_in_store>-->
+                <!--<frontend_class>validate-number</frontend_class>-->
+                <!--</iframe_height>-->
+                <!--<communication translate="label">-->
+                <!--<label>Custom Message</label>-->
+                <!--<frontend_type>textarea</frontend_type>-->
+                <!--<sort_order>170</sort_order>-->
+                <!--<show_in_default>1</show_in_default>-->
+                <!--<show_in_website>1</show_in_website>-->
+                <!--<show_in_store>1</show_in_store>-->
+                <!--<comment>Custom message to display in checkout</comment>-->
+                <!--</communication>-->
+                <!--</fields>-->
+                <!--</mercadopago_recurring>-->
+                <!--</fields>-->
+                <!--</mercadopago_recurring_checkout>-->
             </groups>
         </payment>
     </sections>

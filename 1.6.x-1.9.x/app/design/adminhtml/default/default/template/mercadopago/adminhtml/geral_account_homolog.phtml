@@ -1,13 +1,13 @@
-<?php
-$test_mode = Mage::getStoreConfig('payment/mercadopago/test_mode');
-if (!$test_mode) { ?>
-    <tr>
-        <td colspan="10">
-            <hr class="mp-adminhtml-hr margin-top-30">
-            <br>
-            <span class="mp-adminhtml-title">Homologa tu cuenta, solo te llevará unos minutos</span><br><br>
-            <span>Completa este proceso para que podamos garantizar, juntos, la seguridad de los datos de tus clientes y la <br>adecuación a las normas o disposiciones legales de cada país. </span>
-            <div class="mp-adminhtml-button-search-credentials margin-top-30">Buscar mis credenciales</div>
-        </td>
-    </tr>
-<?php } ?>
+<tr>
+    <td colspan="10">
+        <hr class="mp-adminhtml-hr margin-top-30">
+        <br>
+        <span class="mp-adminhtml-title"><?php echo $helper->__('Homologa tu cuenta, solo te llevará unos minutos'); ?></span><br><br>
+        <span>
+            <?php echo $helper->__('Completa este proceso para que podamos garantizar, juntos, la seguridad de los datos de tus clientes y la <br>adecuación a las normas o disposiciones legales de cada país.'); ?>
+        </span>
+        <div class="mp-adminhtml-button-search-credentials margin-top-30">
+            <?php echo $helper->__('Buscar mis credenciales'); ?>
+        </div>
+    </td>
+</tr>

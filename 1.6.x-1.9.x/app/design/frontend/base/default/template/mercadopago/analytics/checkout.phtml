@@ -2,7 +2,7 @@
 
 <script>
     function sendAnalyticsData(type) {
-        var mpanalytics_data = <?php echo json_encode($this->getAnalyticsData());?>;
+        let mpanalytics_data = <?php echo json_encode($this->getAnalyticsData());?>;
         if (mpanalytics_data != false) {
             var MA = ModuleAnalytics;
             if (type === 'mercadopago_custom') {
