@@ -1,23 +1,14 @@
 <?php
 
 /**
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL).
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- *
- * @category       Payment Gateway
- * @package        MercadoPago
- * @author         Gabriel Matsuoka (gabriel.matsuoka@gmail.com)
- * @copyright      Copyright (c) MercadoPago [http://www.mercadopago.com]
- * @license        http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Class MercadoPago_Core_Block_Adminhtml_Version
  */
- 
-class MercadoPago_Core_Block_Adminhtml_Version
-    extends Mage_Adminhtml_Block_System_Config_Form_Field
+class MercadoPago_Core_Block_Adminhtml_Version extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
+    /**
+     * @param Varien_Data_Form_Element_Abstract $element
+     * @return string
+     */
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         return (string) Mage::helper('mercadopago/data')->getVersionModule();

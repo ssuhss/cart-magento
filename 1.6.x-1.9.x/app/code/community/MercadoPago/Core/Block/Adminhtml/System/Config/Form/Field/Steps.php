@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class MercadoPago_Core_Block_Adminhtml_System_Config_Form_Field_Steps
+ */
 class MercadoPago_Core_Block_Adminhtml_System_Config_Form_Field_Steps extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     /**

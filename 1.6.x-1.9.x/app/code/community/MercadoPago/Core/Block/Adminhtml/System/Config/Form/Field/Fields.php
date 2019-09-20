@@ -19,7 +19,7 @@ class MercadoPago_Core_Block_Adminhtml_System_Config_Form_Field_Fields extends M
             return $this->getAdminTemplate($element, $phtmlArray[$element->getId()]);
         }
 
-        if(!$this->is_render){
+        if (!$this->is_render) {
             $this->setTemplate(null);
         }
 
@@ -49,7 +49,6 @@ class MercadoPago_Core_Block_Adminhtml_System_Config_Form_Field_Fields extends M
     private function getPhtmlArray()
     {
         $phtmlArray = array(
-
             //Advanced
             'payment_mercadopago_steps' => 'mercadopago/adminhtml/geral_steps.phtml',
             'payment_mercadopago_country' => 'mercadopago/adminhtml/geral_country.phtml',
@@ -66,7 +65,6 @@ class MercadoPago_Core_Block_Adminhtml_System_Config_Form_Field_Fields extends M
             'payment_mercadopago_logs' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_debug_mode' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_version' => 'mercadopago/adminhtml/field_margin.phtml',
-
             //Basic
             'payment_mercadopago_standard_head' => 'mercadopago/adminhtml/basic_head.phtml',
             'payment_mercadopago_standard_head_advanced' => 'mercadopago/adminhtml/basic_head_advanced.phtml',
@@ -79,7 +77,6 @@ class MercadoPago_Core_Block_Adminhtml_System_Config_Form_Field_Fields extends M
             'payment_mercadopago_standard_auto_return' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_standard_binary_mode' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_standard_sort_order' => 'mercadopago/adminhtml/field_margin.phtml',
-
             //Custom
             'payment_mercadopago_custom_head' => 'mercadopago/adminhtml/custom_head.phtml',
             'payment_mercadopago_custom_active' => 'mercadopago/adminhtml/field_margin.phtml',
@@ -90,7 +87,6 @@ class MercadoPago_Core_Block_Adminhtml_System_Config_Form_Field_Fields extends M
             'payment_mercadopago_custom_binary_mode' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_custom_enable_gateway' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_custom_sort_order' => 'mercadopago/adminhtml/field_margin.phtml',
-
             //Ticket
             'payment_mercadopago_customticket_head' => 'mercadopago/adminhtml/ticket_head.phtml',
             'payment_mercadopago_customticket_head_advanced' => 'mercadopago/adminhtml/ticket_head_advanced.phtml',
@@ -103,14 +99,11 @@ class MercadoPago_Core_Block_Adminhtml_System_Config_Form_Field_Fields extends M
             'payment_mercadopago_customticket_street_number_address' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_customticket_street_number_address_number' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_customticket_auto_state' => 'mercadopago/adminhtml/field_margin.phtml',
-
             //Pse
             'payment_mercadopago_banktransfer_head' => 'mercadopago/adminhtml/pse_head.phtml',
             'payment_mercadopago_banktransfer_head_advanced' => 'mercadopago/adminhtml/pse_head_advanced.phtml',
-
             'payment_mercadopago_banktransfer_active' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_banktransfer_sort_order' => 'mercadopago/adminhtml/field_margin.phtml'
-
         );
 
         return $phtmlArray;

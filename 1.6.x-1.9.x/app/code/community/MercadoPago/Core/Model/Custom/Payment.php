@@ -1,20 +1,9 @@
 <?php
 
 /**
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL).
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- *
- * @category  Payment Gateway
- * @package   MercadoPago
- * @author    Gabriel Matsuoka (gabriel.matsuoka@gmail.com)
- * @copyright Copyright (c) MercadoPago [http://www.mercadopago.com]
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Class MercadoPago_Core_Model_Custom_Payment
  */
-class MercadoPago_Core_Model_Custom_Payment
-    extends MercadoPago_Core_Model_CustomPayment
+class MercadoPago_Core_Model_Custom_Payment extends MercadoPago_Core_Model_CustomPayment
 {
     //configura o block do formulario e de informações sobre o pagamento
     protected $_formBlockType = 'mercadopago/custom_form';
@@ -30,10 +19,8 @@ class MercadoPago_Core_Model_Custom_Payment
     /**
      * @param string $paymentAction
      * @param object $stateObject
-     *
-     * @return bool
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @return bool|Mage_Payment_Model_Abstract
+     * @throws Mage_Core_Exception
      */
     public function initialize($paymentAction, $stateObject)
     {

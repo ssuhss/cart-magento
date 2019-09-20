@@ -1,34 +1,29 @@
 <?php
 /**
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL).
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- *
- * @category       Payment Gateway
- * @package        MercadoPago
- * @author         Gabriel Matsuoka (gabriel.matsuoka@gmail.com)
- * @copyright      Copyright (c) MercadoPago [http://www.mercadopago.com]
- * @license        http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Class MercadoPago_Core_Block_Custom_Info
  */
-
-
-class MercadoPago_Core_Block_Custom_Info
-    extends Mage_Payment_Block_Info_Cc
+class MercadoPago_Core_Block_Custom_Info extends Mage_Payment_Block_Info_Cc
 {
+    /**
+     * Construct
+     */
     protected function _construct()
     {
         parent::_construct();
         $this->setTemplate('mercadopago/custom/info.phtml');
     }
 
+    /**
+     * @return Mage_Payment_Model_Info
+     */
     public function getOrder()
     {
         return $this->getInfo();
     }
 
+    /**
+     * @return array
+     */
     public function getInfoPayment()
     {
         $order_id = $this->getInfo()->getOrder()->getIncrementId();
