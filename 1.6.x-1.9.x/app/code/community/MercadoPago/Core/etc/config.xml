@@ -18,7 +18,7 @@
 <config>
     <modules>
         <MercadoPago_Core>
-            <version>2.15.4</version>
+            <version>3.0.0</version>
         </MercadoPago_Core>
     </modules>
 
@@ -223,10 +223,10 @@
                     <order_status_approved>processing</order_status_approved>
                     <order_status_refunded>pending</order_status_refunded>
                     <order_status_pending>pending</order_status_pending>
-                    <order_status_in_process>pending</order_status_in_process>
+                    <order_status_in_process>processing</order_status_in_process>
                     <order_status_in_mediation>pending</order_status_in_mediation>
                     <order_status_rejected>pending</order_status_rejected>
-                    <order_status_cancelled>pending</order_status_cancelled>
+                    <order_status_cancelled>canceled</order_status_cancelled>
                     <order_status_chargeback>pending</order_status_chargeback>
                     <use_successpage_mp>1</use_successpage_mp>
                     <logs>0</logs>
@@ -234,6 +234,9 @@
                     <calculalator_available>0</calculalator_available>
                     <time_between_verifications>*/5 * * * *</time_between_verifications>
                     <number_of_hours>1</number_of_hours>
+                    <maximum_partial_refunds>12</maximum_partial_refunds>
+                    <maximum_days_refund>60</maximum_days_refund>
+                    <order_status_partially_refunded>processing</order_status_partially_refunded>
                 </mercadopago>
 
                 <mercadopago_custom>
@@ -245,7 +248,6 @@
                     <banner_checkout>//imgmp.mlstatic.com/org-img/MLB/MP/BANNERS/tipo2_468X60.jpg</banner_checkout>
                     <sort_order>-2</sort_order>
                     <payment_action>authorize</payment_action>
-                    <coupon_mercadopago>0</coupon_mercadopago>
                 </mercadopago_custom>
 
                 <mercadopago_customticket>

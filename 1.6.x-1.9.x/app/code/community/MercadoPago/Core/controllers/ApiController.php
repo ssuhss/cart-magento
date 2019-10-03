@@ -36,13 +36,14 @@ class MercadoPago_Core_ApiController
 
     public function couponAction()
     {
-        $response = array();
         $core = Mage::getModel('mercadopago/core');
 
+        $amount = $this->getRequest()->getParam('amount');
+        $payer = $this->getRequest()->getParam('payer');
         $coupon_id = $this->getRequest()->getParam('coupon_id');
 
         if (!empty($coupon_id)) {
-            $response = $core->validCoupon($coupon_id);
+            $response = $core->validCoupon($amount, $payer, $coupon_id);
         } else {
             $response = array(
                 "status"   => 400,

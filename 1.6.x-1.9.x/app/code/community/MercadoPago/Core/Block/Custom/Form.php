@@ -19,21 +19,6 @@ class MercadoPago_Core_Block_Custom_Form extends MercadoPago_Core_Block_Abstract
      */
     protected function _prepareLayout()
     {
-//        $block = Mage::app()->getLayout()->createBlock('core/text', 'js_mercadopago');
-//        $block->setText(
-//            sprintf(
-//                '<script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
-//                        <link rel="stylesheet" href="%s"/><link rel="stylesheet" href="%s"/>',
-//                $this->getSkinUrl('mercadopago/css/custom_checkout_mercadopago.css') . "?nocache=" . rand(),
-//                $this->getSkinUrl('mercadopago/css/MPv1.css') . "?nocache=" . rand()
-//            )
-//        );
-//        $head = Mage::app()->getLayout()->getBlock('after_body_start');
-//
-//        if ($head) {
-//            $head->append($block);
-//        }
-
         return parent::_prepareLayout();
     }
 

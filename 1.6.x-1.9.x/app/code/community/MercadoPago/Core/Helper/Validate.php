@@ -11,7 +11,7 @@ class MercadoPago_Core_Helper_Validate
      */
     public function validateAccessToken($website)
     {
-        $accessToken = $website->getConfig(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN);
+        $accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
         if (!empty($accessToken)) {
             if (!Mage::helper('mercadopago')->isValidAccessToken($accessToken)) {
                 Mage::throwException(Mage::helper('mercadopago')->__('Mercado Pago - Custom Checkout: Invalid access token'));

@@ -158,7 +158,7 @@
     text-align: center;
 }
 
-#mpApplyCoupon {
+.mp-style-applyCoupon {
     background-color: #337ab7;
     border: 1px solid transparent;
     border-color: #2e6da4;
@@ -170,7 +170,7 @@
     text-align: center;
 }
 
-#mpApplyCoupon:hover {
+.mp-style-applyCoupon:hover {
     background-color: #286090;
     border-color: #204d74;
     color: #fff;
@@ -953,11 +953,11 @@ Checkout
 }
 
 
-.mp-button#mpApplyCoupon{
+.mp-style-applyCoupon{
     height: 48px;
 }
 
-.mp-form-control#mpCouponCode{
+.mp-style-couponCode{
     height: 48px;
     width: 100%;
 }
@@ -1009,21 +1009,21 @@ Checkout
     margin-left: 30px;
 }
 
-.mp-button#mpApplyCoupon {
+.mp-style-applyCoupon {
     height: 48px;
 }
 
-.mp-form-control#mpCouponCode,
-.mp-form-control#mpCardNumber,
-.mp-form-control#mpCardholderName,
-.mp-form-control#mpCardExpirationDate,
-.mp-form-control#mpSecurityCode,
-.mp-form-control#mp-checkout-issuer,
-.mp-form-control#mp-checkout-installments,
-.mp-form-control#mpDocNumber,
-.mp-form-control#mpDocType {
-    height: 48px;
-    width: 100%;
+.mp-style-couponCode,
+.mp-style-cardNumber,
+.mp-style-cardholderName,
+.mp-style-cardExpirationDate,
+.mp-style-securityCode,
+.mp-style-issuer,
+.mercadopago-installments,
+.mp-style-docNumber,
+.mp-style-docType {
+    height: 48px !important;
+    width: 100% !important;
 }
 
 .mp-col-md-2 {

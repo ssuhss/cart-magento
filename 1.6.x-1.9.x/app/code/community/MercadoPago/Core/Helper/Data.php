@@ -1,29 +1,22 @@
 <?php
 
 /**
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL).
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- *
- * @category       Payment Gateway
- * @package        MercadoPago
- * @author         Gabriel Matsuoka (gabriel.matsuoka@gmail.com)
- * @copyright      Copyright (c) MercadoPago [http://www.mercadopago.com]
- * @license        http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Class MercadoPago_Core_Helper_Data
  */
-class MercadoPago_Core_Helper_Data
-    extends Mage_Payment_Helper_Data
+class MercadoPago_Core_Helper_Data extends Mage_Payment_Helper_Data
 {
 
-    const XML_PATH_ACCESS_TOKEN = 'payment/mercadopago_custom_checkout/access_token';
-    const XML_PATH_PUBLIC_KEY = 'payment/mercadopago_custom_checkout/public_key';
+//    const XML_PATH_ACCESS_TOKEN = 'payment/mercadopago_custom_checkout/access_token';
+//    const XML_PATH_PUBLIC_KEY = 'payment/mercadopago_custom_checkout/public_key';
+
+    const XML_PATH_TEST_MODE = 'payment/mercadopago/test_mode';
+    const XML_PATH_ACCESS_TOKEN_TEST = 'payment/mercadopago/access_token_test';
+    const XML_PATH_ACCESS_TOKEN_PROD = 'payment/mercadopago/access_token_prod';
+    const XML_PATH_PUBLIC_KEY_TEST = 'payment/mercadopago/public_key_test';
+    const XML_PATH_PUBLIC_KEY_PROD = 'payment/mercadopago/public_key_prod';
     const XML_PATH_CLIENT_ID = 'payment/mercadopago_standard/client_id';
     const XML_PATH_CLIENT_SECRET = 'payment/mercadopago_standard/client_secret';
     const XML_PATH_USE_SUCCESSPAGE_MP = 'payment/mercadopago/use_successpage_mp';
-
     const PLATFORM_V1_WHITELABEL = 'v1-whitelabel';
     const PLATFORM_DESKTOP = 'Desktop';
     const TYPE = 'magento';
@@ -38,6 +31,40 @@ class MercadoPago_Core_Helper_Data
     protected $_apiInstance;
     protected $_website;
     protected $_log;
+
+    /**
+     * @param $config
+     * @return mixed
+     */
+    public static function getConfigBySelectedWebsite($config)
+    {
+        $website = Mage::helper('mercadopago')->getAdminSelectedWebsite();
+        return $website->getConfig($config);
+    }
+
+    /**
+     * @return bool|mixed
+     */
+    public static function getCurrentAccessToken()
+    {
+        $testMode = (int)MercadoPago_Core_Helper_Data::getConfigBySelectedWebsite(MercadoPago_Core_Helper_Data::XML_PATH_TEST_MODE);
+        if (!$testMode) {
+            return MercadoPago_Core_Helper_Data::getConfigBySelectedWebsite(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN_PROD);
+        }
+        return MercadoPago_Core_Helper_Data::getConfigBySelectedWebsite(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN_TEST);
+    }
+
+    /**
+     * @return bool|mixed
+     */
+    public static function getCurrentPublicKey()
+    {
+        $testMode = (int)MercadoPago_Core_Helper_Data::getConfigBySelectedWebsite(MercadoPago_Core_Helper_Data::XML_PATH_TEST_MODE);
+        if (!$testMode) {
+            return MercadoPago_Core_Helper_Data::getConfigBySelectedWebsite(MercadoPago_Core_Helper_Data::XML_PATH_PUBLIC_KEY_PROD);
+        }
+        return MercadoPago_Core_Helper_Data::getConfigBySelectedWebsite(MercadoPago_Core_Helper_Data::XML_PATH_PUBLIC_KEY_TEST);
+    }
 
 
     /**
@@ -303,13 +330,13 @@ class MercadoPago_Core_Helper_Data
                 'checkout_type' => 'custom'
             );
             if ($methodCode == 'mercadopago_custom') {
-                $analyticsData['public_key'] = Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_PUBLIC_KEY);
+                $analyticsData['public_key'] = MercadoPago_Core_Helper_Data::getCurrentPublicKey();
             } elseif ($methodCode == 'mercadopago_standard') {
                 $analyticsData['analytics_key'] = Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_CLIENT_ID);
                 $analyticsData['checkout_type'] = 'basic';
                 $analyticsData['payment_type'] = isset($additionalInfo['payment_type_id']) ? $order->getPayment()->getData('additional_information')['payment_type_id'] : 'credit_card';
             } else {
-                $analyticsData['analytics_key'] = $this->getClientIdFromAccessToken(Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN));
+                $analyticsData['analytics_key'] = $this->getClientIdFromAccessToken(MercadoPago_Core_Helper_Data::getCurrentAccessToken());
                 $analyticsData['payment_type'] = 'ticket';
             }
         } else {
@@ -319,8 +346,8 @@ class MercadoPago_Core_Helper_Data
             $analyticsData['user_logged'] = Mage::getSingleton('customer/session')->getCustomer()->getId() !== 0 ? 1 : 0;
             $analyticsData['payment_methods'] = implode(',', array_keys(Mage::getSingleton('payment/config')->getActiveMethods()));
 
-            $analyticsData['custom_analytics_key'] = Mage::getStoreConfig(self::XML_PATH_PUBLIC_KEY);
-            $analyticsData['ticket_analytics_key'] = $this->getClientIdFromAccessToken(Mage::getStoreConfig(self::XML_PATH_ACCESS_TOKEN));
+            $analyticsData['custom_analytics_key'] = MercadoPago_Core_Helper_Data::getCurrentPublicKey();
+            $analyticsData['ticket_analytics_key'] = $this->getClientIdFromAccessToken(MercadoPago_Core_Helper_Data::getCurrentAccessToken());
             $analyticsData['standard_analytics_key'] = Mage::getStoreConfig(self::XML_PATH_CLIENT_ID);
         }
 
@@ -344,7 +371,7 @@ class MercadoPago_Core_Helper_Data
         if (!empty($clientId) && !empty($clientSecret)) {
             $this->sendAnalyticsData(Mage::helper('mercadopago')->getApiInstance($clientId, $clientSecret));
         } else {
-            $accessToken = $this->_website->getConfig(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN);
+            $accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
             if (!empty($accessToken)) {
                 $this->sendAnalyticsData(Mage::helper('mercadopago')->getApiInstance($accessToken));
             }

@@ -12,7 +12,6 @@ class MercadoPago_Core_Model_Custom_Payment extends MercadoPago_Core_Model_Custo
     protected $_code = 'mercadopago_custom';
 
     const LOG_FILE = 'mercadopago-custom.log';
-    const XML_PATH_ACCESS_TOKEN = 'payment/mercadopago_custom_checkout/access_token';
 
     public static $exclude_inputs_opc = array('issuer_id', 'card_expiration_month', 'card_expiration_year', 'card_holder_name', 'doc_type', 'doc_number');
 
@@ -26,6 +25,7 @@ class MercadoPago_Core_Model_Custom_Payment extends MercadoPago_Core_Model_Custo
     {
 
         if ($this->getInfoInstance()->getAdditionalInformation('token') == "") {
+            Mage::helper('mercadopago/log')->log("Invalid token", self::LOG_FILE);
             Mage::throwException(Mage::helper('mercadopago')->__('Verify the form data or wait until the validation of the payment data'));
         }
 
@@ -54,7 +54,6 @@ class MercadoPago_Core_Model_Custom_Payment extends MercadoPago_Core_Model_Custo
 
             return true;
         }
-        // }
 
         return false;
     }
@@ -195,7 +194,7 @@ class MercadoPago_Core_Model_Custom_Payment extends MercadoPago_Core_Model_Custo
         }
 
         $preference['binary_mode'] = Mage::getStoreConfigFlag('payment/mercadopago_custom/binary_mode');
-        $preference['statement_descriptor'] = Mage::getStoreConfig('payment/mercadopago_custom/statement_descriptor');
+        $preference['statement_descriptor'] = Mage::getStoreConfig('payment/mercadopago/store_name');
 
         Mage::helper('mercadopago/log')->log("Credit Card -> PREFERENCE to POST /v1/payments", self::LOG_FILE, $preference);
 
@@ -223,7 +222,7 @@ class MercadoPago_Core_Model_Custom_Payment extends MercadoPago_Core_Model_Custo
         if (empty($email)) {
             return false;
         }
-        $access_token = Mage::getStoreConfig(self::XML_PATH_ACCESS_TOKEN);
+        $access_token = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
 
         $mp = Mage::helper('mercadopago')->getApiInstance($access_token);
 
@@ -255,7 +254,7 @@ class MercadoPago_Core_Model_Custom_Payment extends MercadoPago_Core_Model_Custo
 
     public function checkAndcreateCard($customer, $token, $payment)
     {
-        $access_token = Mage::getStoreConfig(self::XML_PATH_ACCESS_TOKEN);
+        $access_token = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
 
         $mp = Mage::helper('mercadopago')->getApiInstance($access_token);
 

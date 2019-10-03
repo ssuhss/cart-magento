@@ -35,7 +35,7 @@ class MercadoPago_Core_Block_Calculator_CalculatorForm
 
     protected function getPublicKey()
     {
-        return Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_PUBLIC_KEY);
+        return MercadoPago_Core_Helper_Data::getCurrentPublicKey();
     }
 
     /**
@@ -45,7 +45,7 @@ class MercadoPago_Core_Block_Calculator_CalculatorForm
      */
     protected function getPaymentMethods()
     {
-        return $this->_helperData->getMercadoPagoPaymentMethods(Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN));
+        return $this->_helperData->getMercadoPagoPaymentMethods(MercadoPago_Core_Helper_Data::getCurrentAccessToken());
     }
 
     /**

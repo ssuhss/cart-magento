@@ -65,6 +65,7 @@ class MercadoPago_Core_Block_Adminhtml_System_Config_Form_Field_Fields extends M
             'payment_mercadopago_logs' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_debug_mode' => 'mercadopago/adminhtml/field_margin.phtml',
             'payment_mercadopago_version' => 'mercadopago/adminhtml/field_margin.phtml',
+            'payment_mercadopago_financing_cost' => 'mercadopago/adminhtml/field_margin.phtml',
             //Basic
             'payment_mercadopago_standard_head' => 'mercadopago/adminhtml/basic_head.phtml',
             'payment_mercadopago_standard_head_advanced' => 'mercadopago/adminhtml/basic_head_advanced.phtml',

@@ -146,7 +146,7 @@ class MercadoPago_Core_Model_Observer
         $sponsorId = "";
         Mage::helper('mercadopago/log')->log("Valid user test", self::LOG_FILE);
 
-        $accessToken = $this->_website->getConfig(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN);
+        $accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
         Mage::helper('mercadopago/log')->log("Get access_token: " . $accessToken, self::LOG_FILE);
 
         $mp = Mage::helper('mercadopago')->getApiInstance($accessToken);
@@ -238,7 +238,7 @@ class MercadoPago_Core_Model_Observer
         $mp = Mage::helper('mercadopago')->getApiInstance($clientId, $clientSecret);
         $response = null;
 
-        $access_token = Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN);
+        $access_token = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
 
         if ($paymentMethod == 'mercadopago_standard') {
             $response = $mp->cancel_payment($paymentID);
@@ -412,6 +412,9 @@ class MercadoPago_Core_Model_Observer
         $maxDays = (int)Mage::getStoreConfig('payment/mercadopago/maximum_days_refund');
         $maxRefunds = (int)Mage::getStoreConfig('payment/mercadopago/maximum_partial_refunds');
 
+        $maxDays = 60;
+        $maxRefunds = 10;
+
         $isValidaData = true;
 
         if (!$isCreditCardPayment) {
@@ -503,7 +506,7 @@ class MercadoPago_Core_Model_Observer
 
         } else {
             $paymentID = $order->getPayment()->getData('additional_information')['payment_id_detail'];
-            $accessToken = Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN);
+            $accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
             $mp = Mage::helper('mercadopago')->getApiInstance($accessToken);
             if ($isTotalRefund) {
                 $response = $mp->post("/v1/payments/$paymentID/refunds?access_token=$accessToken", array());

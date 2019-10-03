@@ -21,7 +21,6 @@ class MercadoPago_Core_Model_Core extends Mage_Payment_Model_Method_Abstract
     protected $_canCreateBillingAgreement = true;
     protected $_canReviewPayment = true;
 
-    const XML_PATH_ACCESS_TOKEN = 'payment/mercadopago_custom_checkout/access_token';
     const LOG_FILE = 'mercadopago-custom.log';
 
     /**
@@ -214,7 +213,7 @@ class MercadoPago_Core_Model_Core extends Mage_Payment_Model_Method_Abstract
     public function postPaymentV1($preference)
     {
         if (!$this->_accessToken) {
-            $this->_accessToken = Mage::getStoreConfig(self::XML_PATH_ACCESS_TOKEN);
+            $this->_accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
         }
         Mage::helper('mercadopago/log')->log("Access Token for Post", self::LOG_FILE, $this->_accessToken);
 
@@ -266,7 +265,7 @@ class MercadoPago_Core_Model_Core extends Mage_Payment_Model_Method_Abstract
     public function getPaymentV1($payment_id)
     {
         if (!$this->_accessToken) {
-            $this->_accessToken = Mage::getStoreConfig(self::XML_PATH_ACCESS_TOKEN);
+            $this->_accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
         }
         $mp = Mage::helper('mercadopago')->getApiInstance($this->_accessToken);
 
@@ -287,7 +286,7 @@ class MercadoPago_Core_Model_Core extends Mage_Payment_Model_Method_Abstract
     public function getPaymentMethods()
     {
         if (!$this->_accessToken) {
-            $this->_accessToken = Mage::getStoreConfig(self::XML_PATH_ACCESS_TOKEN);
+            $this->_accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
         }
 
         $mp = Mage::helper('mercadopago')->getApiInstance($this->_accessToken);
@@ -427,7 +426,7 @@ class MercadoPago_Core_Model_Core extends Mage_Payment_Model_Method_Abstract
     public function getIdentificationType()
     {
         if (!$this->_accessToken) {
-            $this->_accessToken = Mage::getStoreConfig(self::XML_PATH_ACCESS_TOKEN);
+            $this->_accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
         }
 
         $mp = Mage::helper('mercadopago')->getApiInstance($this->_accessToken);
@@ -441,7 +440,7 @@ class MercadoPago_Core_Model_Core extends Mage_Payment_Model_Method_Abstract
     public function getBanks()
     {
         if (!$this->_accessToken) {
-            $this->_accessToken = Mage::getStoreConfig(self::XML_PATH_ACCESS_TOKEN);
+            $this->_accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
         }
 
         $mp = Mage::helper('mercadopago')->getApiInstance($this->_accessToken);
@@ -456,5 +455,31 @@ class MercadoPago_Core_Model_Core extends Mage_Payment_Model_Method_Abstract
         return $payment_methods;
     }
 
+    /**
+     * @param $amount
+     * @param $payer
+     * @param $coupon
+     * @return array|null
+     */
+    public function validCoupon($amount, $payer, $coupon)
+    {
+        try{
+            if (!$this->_accessToken) {
+                $this->_accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
+            }
+
+            $mp = Mage::helper('mercadopago')->getApiInstance($this->_accessToken);
+            $params = array(
+                "transaction_amount" => $amount,
+                "payer_email" => $payer,
+                "coupon_code" => $coupon
+            );
+
+            $response = $mp->get("/discount_campaigns", $params);
+            return $response;
+        }catch (Exception $e){
+            return null;
+        }
+    }
 
 }

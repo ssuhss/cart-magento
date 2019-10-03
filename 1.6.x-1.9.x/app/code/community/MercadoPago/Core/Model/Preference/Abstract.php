@@ -13,8 +13,6 @@ abstract class MercadoPago_Core_Model_Preference_Abstract extends Mage_Core_Mode
     public $accessToken;
     public $logFile;
 
-    const XML_PATH_ACCESS_TOKEN = 'payment/mercadopago_custom_checkout/access_token';
-
     /**
      * MercadoPago_Core_Model_Preference_Abstract constructor.
      * @throws Mage_Core_Model_Store_Exception
@@ -27,7 +25,7 @@ abstract class MercadoPago_Core_Model_Preference_Abstract extends Mage_Core_Mode
         $this->billingAddress = $this->quote->getBillingAddress()->getData();
         $this->order = $this->_getOrder($this->_getQuote()->getReservedOrderId());
         $this->orderIncrementId = $this->_getQuote()->getReservedOrderId();
-        $this->accessToken = Mage::getStoreConfig(self::XML_PATH_ACCESS_TOKEN);
+        $this->accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
         $this->customerInfo = $this->getCustomerInfo($this->customer, $this->order);
     }
 
@@ -150,7 +148,8 @@ abstract class MercadoPago_Core_Model_Preference_Abstract extends Mage_Core_Mode
 
     /**
      * @param $coupon
-     * @return mixed
+     * @return array|null
+     * @throws Mage_Core_Exception
      */
     public function getCouponApi($coupon)
     {

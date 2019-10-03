@@ -31,8 +31,8 @@ abstract class MercadoPago_Core_Model_CustomPayment
     public function isAvailable($quote = null)
     {
         $parent = parent::isAvailable($quote);
-        $accessToken = Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN);
-        $publicKey = Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_PUBLIC_KEY);
+        $accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
+        $publicKey = MercadoPago_Core_Helper_Data::getCurrentPublicKey();
         $custom = (!empty($publicKey) && !empty($accessToken));
 
         if (!$parent || !$custom) {

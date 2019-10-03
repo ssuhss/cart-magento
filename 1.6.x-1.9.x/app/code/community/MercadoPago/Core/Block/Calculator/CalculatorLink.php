@@ -26,8 +26,8 @@ class MercadoPago_Core_Block_Calculator_CalculatorLink
      */
     public function isAvailableCalculator(){
 
-        $isValidAccessToken = $this->_helperData->isValidAccessToken(Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_ACCESS_TOKEN));
-        $pk = Mage::getStoreConfig(MercadoPago_Core_Helper_Data::XML_PATH_PUBLIC_KEY);
+        $isValidAccessToken = $this->_helperData->isValidAccessToken(MercadoPago_Core_Helper_Data::getCurrentAccessToken());
+        $pk = MercadoPago_Core_Helper_Data::getCurrentPublicKey();
         return  ($isValidAccessToken & !empty($pk) & $this->_helperData->isAvailableCalculator());
 
     }

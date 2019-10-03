@@ -8,7 +8,6 @@ class MercadoPago_RestClient_MeliRestClient extends MercadoPago_RestClient_Abstr
 {
     const API_MELI_BASE_URL = 'https://api.mercadolibre.com';
 
-
     /**
      * @param $request
      * @param $version

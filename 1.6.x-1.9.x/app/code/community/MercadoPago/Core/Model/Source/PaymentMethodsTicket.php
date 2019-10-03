@@ -9,7 +9,6 @@ class MercadoPago_Core_Model_Source_PaymentMethodsTicket extends Mage_Payment_Mo
     public $log;
     public $helper;
 
-    const XML_PATH_ACCESS_TOKEN = 'payment/mercadopago_custom_checkout/access_token';
 
     public function __construct()
     {
@@ -27,7 +26,7 @@ class MercadoPago_Core_Model_Source_PaymentMethodsTicket extends Mage_Payment_Mo
         $methods = array();
         $methods[] = array('value' => '', 'label' => '');
         $website = $this->helper->getAdminSelectedWebsite();
-        $accessToken = $website->getConfig(self::XML_PATH_ACCESS_TOKEN);
+        $accessToken = MercadoPago_Core_Helper_Data::getCurrentAccessToken();
 
         if (empty($accessToken)) {
             return $methods;
